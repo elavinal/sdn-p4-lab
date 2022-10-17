@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+# EDIT E. Lavinal - Université de Toulouse (France)
+# Adding PacketIn method
+
 from abc import abstractmethod
 from datetime import datetime
 from queue import Queue
@@ -143,6 +147,16 @@ class SwitchConnection(object):
             print("P4Runtime Write:", request)
         else:
             self.client_stub.Write(request)
+    
+    # EDIT EL      
+    def PacketIn(self, dry_run=False, **kwargs):
+        request = p4runtime_pb2.StreamMessageRequest()
+        if dry_run:
+            print("P4 Runtime PacketIn: ", request) 
+        else:
+            self.requests_stream.put(request)
+            for item in self.stream_msg_resp:
+                return item
 
 class GrpcRequestLogger(grpc.UnaryUnaryClientInterceptor,
                         grpc.UnaryStreamClientInterceptor):
