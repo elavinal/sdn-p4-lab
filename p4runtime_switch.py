@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Edit E. Lavinal, Université de Toulouse (France)
+# Add CPU PORT when starting P4RuntimeSwitch
+
 import os
 import tempfile
 from time import sleep
@@ -29,6 +32,8 @@ class P4RuntimeSwitch(P4Switch):
     "BMv2 switch with gRPC support"
     next_grpc_port = 50051
     next_thrift_port = 9090
+    # Edit EL
+    sw_cpu_port = 255
 
     def __init__(self, name, sw_path = None, json_path = None,
                  grpc_port = None,
@@ -88,6 +93,8 @@ class P4RuntimeSwitch(P4Switch):
             self.device_id = P4Switch.device_id
             P4Switch.device_id += 1
         self.nanomsg = "ipc:///tmp/bm-{}-log.ipc".format(self.device_id)
+        # EDIT EL - set cpu port
+        self.cpu_port = P4RuntimeSwitch.sw_cpu_port
 
 
     def check_switch_started(self, pid):
@@ -122,9 +129,11 @@ class P4RuntimeSwitch(P4Switch):
             args.append('--thrift-port ' + str(self.thrift_port))
         if self.grpc_port:
             args.append("-- --grpc-server-addr 0.0.0.0:" + str(self.grpc_port))
+        # EDIT EL
+        if self.cpu_port:
+            args.append("--cpu-port " + str(self.cpu_port))
         cmd = ' '.join(args)
         info(cmd + "\n")
-
 
         pid = None
         with tempfile.NamedTemporaryFile() as f:

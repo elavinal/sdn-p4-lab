@@ -19,6 +19,10 @@
 # We encourage you to dissect this script to better understand the BMv2/Mininet
 # environment used by the P4 tutorial.
 #
+
+# Edit E. Lavinal, Université de Toulouse (France)
+# Print Thrift port and CPU port when configuring P4RuntimeSwitch
+
 import argparse
 import json
 import os
@@ -48,6 +52,9 @@ def configureP4Switch(**switch_args):
 
             def describe(self):
                 print("%s -> gRPC port: %d" % (self.name, self.grpc_port))
+                # EDIT EL
+                print("%s -> Thrift port: %d" % (self.name, self.thrift_port))
+                print("%s -> CPU port: %d" % (self.name, self.cpu_port))
 
         return ConfiguredP4RuntimeSwitch
     else:
