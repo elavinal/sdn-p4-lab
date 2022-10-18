@@ -6,5 +6,10 @@ __pycache__/
 # Vagrant files
 .vagrant/
 
+# P4 dirs
+build/
+logs/
+pcaps/
+
 # Solution
 solution/
