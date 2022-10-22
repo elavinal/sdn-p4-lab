@@ -49,20 +49,27 @@ control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t smeta) {
 
-    /* TODO: define an action to set smeta.egress_spec */
+    /* TODO: define a forward action to set smeta.egress_spec */
     /* --> copy from previous exercise */
 
-    /* TODO (new). Add a broadcast action to modify smeta.mcast_grp */
+    /* New TODO v1: add a broadcast action to modify smeta.mcast_grp */
+
+    /* New TODO v2: modify the broadcast action, adding a parameter */
 
 
     /* TODO: define a dmac table that can trigger the previous actions */
-    /* cf. previous exercise */
-    /* New: set default action to broadcast */
+    /* --> copy from previous exercise */
+    /* New TODO v1: set default action to broadcast */
+    /* New TODO v2: set default action to NoAction */
 
 
+    /* New TODO v2: define an mcast_grp table */
+ 
 
     apply {
-        /* TODO: apply the dmac table --> copy from previous exercise */
+        /* TODO: apply dmac table --> copy from previous exercise */
+ 
+        /* New TODO v2: apply mcast_grp table if no hit on dmac table */
 
     }
 
