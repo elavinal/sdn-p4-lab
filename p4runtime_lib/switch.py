@@ -14,7 +14,7 @@
 #
 
 # EDIT E. Lavinal - Université de Toulouse (France)
-# Adding PacketIn method
+# Adding ReadDirectCounters and PacketIn methods
 
 from abc import abstractmethod
 from datetime import datetime
@@ -135,6 +135,21 @@ class SwitchConnection(object):
             for response in self.client_stub.Read(request):
                 yield response
 
+    # EDIT EL
+    def ReadDirectCounters(self, table_id=None, dry_run=False):
+        request = p4runtime_pb2.ReadRequest()
+        request.device_id = self.device_id
+        entity = request.entities.add()
+        direct_counter_entry = entity.direct_counter_entry
+        if table_id is not None:
+            direct_counter_entry.table_entry.table_id = table_id
+        else:
+            direct_counter_entry.table_entry.table_id = 0
+        if dry_run:
+            print("P4Runtime Read:", request)
+        else:
+            for response in self.client_stub.Read(request):
+                yield response
 
     def WritePREEntry(self, pre_entry, dry_run=False):
         request = p4runtime_pb2.WriteRequest()
@@ -148,7 +163,7 @@ class SwitchConnection(object):
         else:
             self.client_stub.Write(request)
     
-    # EDIT EL      
+    # EDIT EL
     def PacketIn(self, dry_run=False, **kwargs):
         request = p4runtime_pb2.StreamMessageRequest()
         if dry_run:
